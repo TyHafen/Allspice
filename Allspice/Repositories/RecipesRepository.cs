@@ -34,5 +34,35 @@ namespace Allspice.Repositories
         }
 
 
+
+        internal Recipe GetById(int id)
+        {
+            string sql = @"
+         SELECT 
+         r.*,
+          a.* 
+          FROM recipes r 
+          JOIN accounts a on r.creatorId = a.id
+          WHERE r.id = @id;
+         ";
+            return _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+             {
+                 recipe.Creator = account;
+                 return recipe;
+             }, new { id }).FirstOrDefault();
+
+        }
+        internal string Remove(int id)
+        {
+            string sql = @"
+            DELETE FROM recipes WHERE id = @id LIMIT 1;
+            ";
+            int rowsAffected = _db.Execute(sql, new { id });
+            if (rowsAffected > 0)
+            {
+                return "deleted";
+            }
+            throw new System.Exception("couldnt delete");
+        }
     }
 }
