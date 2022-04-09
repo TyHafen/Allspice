@@ -29,11 +29,11 @@ DROP TABLE IF EXISTS ingredient;
 INSERT INTO
   ingredients (name, quantity, recipeId)
 VALUES("onions", "half a white onion", 1);
+DROP TABLE IF EXISTS recipes;
 SELECT
   *
 FROM
   ingredients;
-DROP TABLE IF EXISTS recipes;
 INSERT INTO
   recipes (title, subtitle, category, creatorId)
 VALUES(
@@ -54,3 +54,9 @@ FROM
   JOIN accounts a
 WHERE
   a.id = r.creatorId;
+SELECT
+  i.*
+FROM
+  ingredients i
+WHERE
+  i.id = 5

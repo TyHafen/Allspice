@@ -1,6 +1,8 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Allspice.Models;
 using Allspice.Services;
+using CodeWorks.Auth0Provider;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Allspice.Controllers
@@ -16,13 +18,16 @@ namespace Allspice.Controllers
             _ingredientService = ingredientService;
         }
 
-        [HttpGet]
-        public ActionResult<List<Ingredient>> GetAll()
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Ingredient>> Create([FromBody] Ingredient ingredientData)
         {
             try
             {
-                List<Ingredient> ingredients = _ingredientService.GetAll();
-                return Ok(ingredients);
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                Ingredient ingredient = _ingredientService.Create(ingredientData, userInfo.Id);
+                return Ok(ingredient);
             }
             catch (System.Exception e)
             {
@@ -30,7 +35,21 @@ namespace Allspice.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<ActionResult<string>> Delete(int id)
+        {
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                return Ok(_ingredientService.Remove(id, userInfo));
+            }
+            catch (System.Exception e)
+            {
 
+                return BadRequest(e.Message);
+            }
         }
 
 

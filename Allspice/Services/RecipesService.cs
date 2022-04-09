@@ -30,5 +30,15 @@ namespace Allspice.Services
             }
             return _recipesRepo.Remove(id);
         }
+
+        internal Recipe GetRecipeById(int id)
+        {
+            Recipe found = _recipesRepo.GetById(id);
+            if (found == null)
+            {
+                throw new System.Exception("Invalid Id");
+            }
+            return found;
+        }
     }
 }
