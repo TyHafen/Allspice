@@ -21,14 +21,14 @@ namespace Allspice.Services
         {
             return _recipesRepo.Create(recipeData);
         }
-        internal string Remove(int id, Account user)
+        internal string Delete(int id, Account user)
         {
             Recipe recipe = _recipesRepo.GetById(id);
             if (recipe.CreatorId != user.Id)
             {
                 throw new System.Exception("not yours to delete");
             }
-            return _recipesRepo.Remove(id);
+            return _recipesRepo.Delete(id);
         }
 
         internal Recipe GetRecipeById(int id)
@@ -40,5 +40,7 @@ namespace Allspice.Services
             }
             return found;
         }
+
+
     }
 }

@@ -37,8 +37,8 @@ FROM
 INSERT INTO
   recipes (title, subtitle, category, creatorId)
 VALUES(
-    "rice and salmon",
-    "fish dishes",
+    "Mac and Cheese",
+    "Itialian",
     "seafood",
     "624f58fdaf82a511b148b903"
   );

@@ -52,7 +52,7 @@ namespace Allspice.Repositories
              }, new { id }).FirstOrDefault();
 
         }
-        internal string Remove(int id)
+        internal string Delete(int id)
         {
             string sql = @"
             DELETE FROM recipes WHERE id = @id LIMIT 1;
