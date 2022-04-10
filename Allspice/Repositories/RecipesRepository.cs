@@ -24,9 +24,9 @@ namespace Allspice.Repositories
         internal Recipe Create(Recipe recipeData)
         {
             string sql = @"INSERT INTO recipes 
-            (title, subtitle, category, creatorId)
+            (title, subtitle, category, creatorId, image)
              VALUES 
-             (@Title, @Subtitle, @Category, @CreatorId);
+             (@Title, @Subtitle, @Category, @CreatorId, @Image);
               SELECT LAST_INSERT_ID();";
             int id = _db.ExecuteScalar<int>(sql, recipeData);
             recipeData.Id = id;

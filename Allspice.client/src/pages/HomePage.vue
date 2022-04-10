@@ -1,30 +1,81 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid">
+    <div class="row container-fluid justify-content-center">
+      <div class="col-md-11 banner rounded-3 mt-3 d-flex shadow"></div>
+      <div
+        class="
+          col-md-6
+          bg-dark
+          d-flex
+          justify-content-around
+          rounded
+          selection-bar
+          align-items-center
+          shadow
+        "
+      >
+        <h3>All</h3>
+        <h3>Favorites</h3>
+        <h3>My recipes</h3>
+      </div>
+    </div>
+    <div class="row">
+      <!-- iterate over recipes -->
+      <div v-for="r in recipes" :key="r.id" class="col-md-3 m-3 p-1">
+        <RecipeCard :recipe="r" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed } from '@vue/reactivity'
+import { AppState } from '../AppState'
+import { watchEffect } from '@vue/runtime-core'
+import { recipesService } from '../services/RecipesService'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+
+    watchEffect(async () => {
+      try {
+        await recipesService.getAll()
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+
+    })
+    return {
+      recipes: computed(() => AppState.recipes)
+    }
+  }
+
+
+
 }
 </script>
 
 <style scoped lang="scss">
-.home{
+.selection-bar {
+  height: 7vh;
+
+  transform: translateY(-35%);
+}
+.banner {
+  height: 30vh;
+  background-image: url("https://www.idhsustainabletrade.com/uploaded/2018/04/Spices-1-1440x400-c-default@1x.jpeg");
+  background-size: cover;
+}
+.home {
   display: grid;
   height: 80vh;
   place-content: center;
   text-align: center;
   user-select: none;
-  .home-card{
+  .home-card {
     width: 50vw;
-    > img{
+    > img {
       height: 200px;
       max-width: 200px;
       width: 100%;
