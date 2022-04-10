@@ -41,6 +41,8 @@ namespace Allspice
             services.AddScoped<RecipesService>();
             services.AddScoped<IngredientsRepository>();
             services.AddScoped<IngredientsService>();
+            services.AddScoped<StepsRepository>();
+            services.AddScoped<StepsService>();
         }
 
         private void ConfigureCors(IServiceCollection services)

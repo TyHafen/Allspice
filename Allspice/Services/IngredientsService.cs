@@ -33,10 +33,33 @@ namespace Allspice.Services
             return _ingredientsRepo.GetAll(id);
         }
 
-        // internal string Remove(int id, Account userInfo)
-        // {
-        //     Ingredient ingredient = _ingredientsRepo.GetById(id);
-        //     return _ingredientsRepo.Remove(id);
-        // }
+
+
+        internal string Remove(int id, Account userInfo)
+        {
+            Ingredient ingredient = _ingredientsRepo.GetById(id);
+            Recipe recipe = _recipesService.GetRecipeById(ingredient.RecipeId);
+
+            if (recipe.CreatorId != userInfo.Id)
+            {
+                throw new System.Exception("not yours to delete");
+            }
+            return _ingredientsRepo.Remove(id);
+        }
+
+        internal Ingredient Edit(Ingredient updates, Account userInfo)
+        {
+            Recipe recipe = _recipesService.GetRecipeById(updates.RecipeId);
+            updates.RecipeId = recipe.Id;
+            if (recipe.CreatorId != userInfo.Id)
+            {
+                throw new System.Exception("Not your recipe to edit");
+            }
+            Ingredient original = _ingredientsRepo.GetById(updates.Id);
+            original.Name = updates.Name ?? original.Name;
+            original.Quantity = updates.Quantity ?? original.Quantity;
+            _ingredientsRepo.Edit(original);
+            return original;
+        }
     }
 }

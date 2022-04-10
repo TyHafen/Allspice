@@ -41,6 +41,9 @@ namespace Allspice.Services
             return found;
         }
 
-
+        internal List<Step> GetSteps(int id)
+        {
+            return _recipesRepo.Getsteps(id);
+        }
     }
 }

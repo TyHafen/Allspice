@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 using Allspice.Models;
 using Allspice.Services;
 using CodeWorks.Auth0Provider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace Allspice.Controllers
 {
@@ -36,18 +38,40 @@ namespace Allspice.Controllers
             }
 
         }
-        [HttpDelete("{id}")]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<string>> Delete(int id)
+        public async Task<ActionResult<Ingredient>> Edit([FromBody] Ingredient updates, int id)
         {
             try
             {
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                return Ok(_ingredientService.Remove(id, userInfo));
+                updates.Id = id;
+                Ingredient updated = _ingredientService.Edit(updates, userInfo);
+                return Ok(updates);
             }
             catch (System.Exception e)
             {
 
+                return BadRequest(e.Message);
+            }
+
+
+        }
+
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<ActionResult<string>> Remove(int id)
+        {
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                _ingredientService.Remove(id, userInfo);
+                return Ok("deleted");
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }

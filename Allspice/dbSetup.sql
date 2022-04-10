@@ -25,38 +25,23 @@ CREATE TABLE IF NOT EXISTS ingredients(
   recipeId VARCHAR(255) NOT NULL,
   FOREIGN KEY (recipeId) REFERENCES recipes(id)
 ) default charset utf8 COMMENT '';
-DROP TABLE IF EXISTS ingredient;
-INSERT INTO
-  ingredients (name, quantity, recipeId)
-VALUES("onions", "half a white onion", 1);
-DROP TABLE IF EXISTS recipes;
+CREATE TABLE IF NOT EXISTS steps(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+  recipeId INT,
+  Position INT,
+  body TEXT
+) default charset utf8 COMMENT '';
 SELECT
   *
 FROM
-  ingredients;
+  steps;
 INSERT INTO
-  recipes (title, subtitle, category, creatorId)
-VALUES(
-    "Mac and Cheese",
-    "Itialian",
-    "seafood",
-    "624f58fdaf82a511b148b903"
-  );
+  steps (position, body, recipeId) VALUE (2, "Add the things", 6);
 SELECT
-  *
+  s.*
 FROM
-  recipes;
-SELECT
-  r.*,
-  a.*
-FROM
-  recipes r
-  JOIN accounts a
+  steps s
 WHERE
-  a.id = r.creatorId;
-SELECT
-  i.*
-FROM
-  ingredients i
-WHERE
-  i.id = 5
+  s.RecipeId = 6;

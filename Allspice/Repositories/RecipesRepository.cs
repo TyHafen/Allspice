@@ -52,6 +52,17 @@ namespace Allspice.Repositories
              }, new { id }).FirstOrDefault();
 
         }
+
+        internal List<Step> Getsteps(int id)
+        {
+            string sql = @"
+             SELECT
+              s.* 
+              FROM steps s 
+              WHERE s.RecipeId = @id;";
+            return _db.Query<Step>(sql, new { id }).ToList();
+        }
+
         internal string Delete(int id)
         {
             string sql = @"
