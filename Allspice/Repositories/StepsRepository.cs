@@ -25,7 +25,7 @@ namespace Allspice.Repositories
 
         internal string Remove(int id)
         {
-            string sql = @"DELETE FROM steps WHERE id = @id LIMIt 1;";
+            string sql = @"DELETE FROM steps WHERE id = @id LIMIT 1;";
             int rowsAffected = _db.Execute(sql, new { id });
             if (rowsAffected > 0)
             {
@@ -33,6 +33,20 @@ namespace Allspice.Repositories
             }
             throw new Exception("Cant delete");
         }
+        internal Step GetById(int id)
+        {
+            string sql = "SELECT * FROM steps WHERE id = @id;";
+            return _db.QueryFirstOrDefault<Step>(sql, new { id });
+        }
 
+        internal void Edit(Step original)
+        {
+            string sql = @"UPDATE steps SET 
+         position = @Position, 
+         body = @Body,
+         recipeId = @recipeId
+         WHERE id = @id;";
+            _db.Execute(sql, original);
+        }
     }
 }

@@ -33,15 +33,12 @@ CREATE TABLE IF NOT EXISTS steps(
   Position INT,
   body TEXT
 ) default charset utf8 COMMENT '';
-SELECT
-  *
-FROM
-  steps;
-INSERT INTO
-  steps (position, body, recipeId) VALUE (2, "Add the things", 6);
-SELECT
-  s.*
-FROM
-  steps s
-WHERE
-  s.RecipeId = 6;
+CREATE TABLE IF NOT EXISTS favorites(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+  recipeId INT,
+  AccountId VARCHAR(255),
+  FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE,
+  FOREIGN KEY (AccountId) REFERENCES accounts(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';

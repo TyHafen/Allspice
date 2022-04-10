@@ -51,6 +51,23 @@ namespace Allspice.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult<Step>> Edit([FromBody] Step updates, int id)
+
+        {
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                updates.Id = id;
+                Step updated = _stepsService.Edit(updates, userInfo);
+                return Ok(updated);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
 
 

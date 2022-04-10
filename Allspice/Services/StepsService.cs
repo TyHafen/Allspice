@@ -34,5 +34,20 @@ namespace Allspice.Services
             }
             return _stepsRepo.Remove(id);
         }
+
+        internal Step Edit(Step updates, Account userInfo)
+        {
+            Recipe recipe = _recipeService.GetRecipeById(updates.Id);
+            updates.RecipeId = recipe.Id;
+            if (recipe.CreatorId != userInfo.Id)
+            {
+                throw new System.Exception("not yours to edit");
+            }
+            Step original = _stepsRepo.GetById(updates.Id);
+            original.Position = updates.Position;
+            original.Body = updates.Body ?? original.Body;
+            _stepsRepo.Edit(original);
+            return original;
+        }
     }
 }
